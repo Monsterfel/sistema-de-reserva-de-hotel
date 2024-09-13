@@ -1,0 +1,90 @@
+drop database reservas_de_hotel;
+create database reservas_de_hotel;
+use reservas_de_hotel;
+
+create table hospedes ( 
+hospedes_id int auto_increment primary key,
+nome varchar (100) not null,
+telefone varchar (15),
+email varchar (100)
+);
+
+create table quartos(
+quartos_id int primary key,
+numero int not null unique,
+tipo varchar (50),
+preco decimal (10,2) not null
+);
+
+create table reservas(
+reservas_id int auto_increment primary key,
+hospedes_id int,
+quartos_id int,
+dataChekin date not null,
+dataChekout date not null,
+foreign key (hospedes_id) references hospedes(hospedes_id),
+foreign key (quartos_id) references quartos(quartos_id)
+);
+
+INSERT INTO hospedes (nome, telefone, email) VALUES
+('lucas', '45877699', 'gamer@gmail.com'),
+('otavio', '21034569', 'juninhomandacapa@gmail.com'),
+('mateus', '21998765', 'josesimfiufiu@gmail.com'),
+('fernando', '99169161', 'cachola3344@gmail.com');
+
+CREATE TABLE quartos_id (
+    numero INT PRIMARY KEY,
+    tipo VARCHAR(50),
+    preco DECIMAL(10, 2)
+);
+INSERT INTO quartos_id (numero, tipo, preco) VALUES
+(51, 'single', 100),
+(52, 'suite', 500),
+(53, 'double', 250),
+(54, 'single', 100),
+(55, 'suite', 500),
+(56, 'suite', 500);
+
+
+
+SHOW CREATE TABLE reservas;
+INSERT INTO reservas (hospedes_id, quartos_id, dataChekout, dataChekin) VALUES
+(1, 51, '2024-08-01', '2024-09-01'),
+(2, 52, '2024-08-15', '2024-08-30'),
+(3, 53, '2024-08-02', '2024-10-24'),
+(4, 54, '2024-04-01', '2024-12-31'),
+(5, 55, '2001-07-11', '2022-02-24'),
+(6, 56, '2024-04-06', '2025-04-06');
+
+SELECT * FROM quartos WHERE quartos_id IN (51, 52, 53, 54, 55, 56);
+INSERT INTO quartos (quartos_id, other_columns) VALUES
+(51, other_values),
+(52, other_values),
+(53, other_values),
+(54, other_values),
+(55, other_values),
+(56, other_values);
+
+
+select q.numero as quarto, q.tipo as tipo, q.preco as preco
+from quartos q
+left join reservas r on q.quartos_id
+and(r.dataChekin <= '2024-08-16' and r.dataChekout >= '2024-08-16')
+where r.quartos_id is null;
+
+update hospedes
+set telefone='1122334455', email = 'maria.silva@newemail.com'
+where hospedes_id = 1;
+
+update quartos
+set preco = 120.00
+where quartos_id = 101;
+
+delete from reservas
+where reservas_id = 4;
+
+delete from hospedes
+where hospedes_id = 5;
+
+delete from reservas
+where hospedes_id = 5;
